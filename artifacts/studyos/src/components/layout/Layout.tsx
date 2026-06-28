@@ -9,7 +9,6 @@ import {
   CheckSquare, 
   Calculator as CalculatorIcon, 
   Timer, 
-  BarChart2, 
   Database, 
   Settings as SettingsIcon,
   LogOut,
@@ -39,7 +38,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     { href: "/tasks", label: "Tasks", icon: CheckSquare },
     { href: "/calculator", label: "Calculator", icon: CalculatorIcon },
     { href: "/focus", label: "Focus Timer", icon: Timer },
-    { href: "/statistics", label: "Statistics", icon: BarChart2 },
     { href: "/backup", label: "Backup & Restore", icon: Database },
     { href: "/settings", label: "Settings", icon: SettingsIcon },
   ];
@@ -87,7 +85,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       {/* Main Content */}
       <main className="flex-1 flex flex-col min-w-0 h-screen overflow-hidden">
         {/* Topbar */}
-        <header className="h-16 border-b border-primary/20 bg-primary/10 flex items-center justify-between px-6 flex-shrink-0 z-10">
+        <header className="h-16 border-b border-border bg-card/50 backdrop-blur flex items-center justify-between px-6 flex-shrink-0 z-10">
           <div />
 
           <div className="flex items-center gap-6">
