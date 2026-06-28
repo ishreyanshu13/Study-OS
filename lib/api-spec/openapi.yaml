@@ -1,22 +1,41 @@
 openapi: 3.1.0
 info:
-  # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: StudyOS API specification
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: auth
+    description: Authentication
+  - name: subjects
+    description: Syllabus subjects
+  - name: chapters
+    description: Subject chapters
+  - name: tasks
+    description: To-do tasks
+  - name: events
+    description: Calendar events
+  - name: sessions
+    description: Focus timer sessions
+  - name: settings
+    description: User settings
+  - name: stats
+    description: Statistics
+  - name: achievements
+    description: Gamification achievements
+  - name: backup
+    description: Backup and restore
+
 paths:
   /healthz:
     get:
       operationId: healthCheck
       tags: [health]
       summary: Health check
-      description: Returns server health status
       responses:
         "200":
           description: Healthy
@@ -24,13 +43,1098 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /auth/login:
+    post:
+      operationId: login
+      tags: [auth]
+      summary: Login with master password
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginInput"
+      responses:
+        "200":
+          description: Logged in
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthStatus"
+        "401":
+          description: Invalid password
+
+  /auth/logout:
+    post:
+      operationId: logout
+      tags: [auth]
+      summary: Logout
+      responses:
+        "200":
+          description: Logged out
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthStatus"
+
+  /auth/me:
+    get:
+      operationId: getAuthStatus
+      tags: [auth]
+      summary: Get current auth status
+      responses:
+        "200":
+          description: Auth status
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthStatus"
+
+  /subjects:
+    get:
+      operationId: listSubjects
+      tags: [subjects]
+      summary: List all subjects
+      responses:
+        "200":
+          description: List of subjects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Subject"
+    post:
+      operationId: createSubject
+      tags: [subjects]
+      summary: Create a subject
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SubjectInput"
+      responses:
+        "201":
+          description: Created subject
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Subject"
+
+  /subjects/{id}:
+    get:
+      operationId: getSubject
+      tags: [subjects]
+      summary: Get a subject with chapters
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Subject
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SubjectWithChapters"
+        "404":
+          description: Not found
+    patch:
+      operationId: updateSubject
+      tags: [subjects]
+      summary: Update a subject
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SubjectUpdate"
+      responses:
+        "200":
+          description: Updated subject
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Subject"
+        "404":
+          description: Not found
+    delete:
+      operationId: deleteSubject
+      tags: [subjects]
+      summary: Delete a subject
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+        "404":
+          description: Not found
+
+  /subjects/{subjectId}/chapters:
+    get:
+      operationId: listChapters
+      tags: [chapters]
+      summary: List chapters for a subject
+      parameters:
+        - name: subjectId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: List of chapters
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Chapter"
+    post:
+      operationId: createChapter
+      tags: [chapters]
+      summary: Create a chapter
+      parameters:
+        - name: subjectId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ChapterInput"
+      responses:
+        "201":
+          description: Created chapter
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Chapter"
+
+  /subjects/{subjectId}/chapters/{id}:
+    patch:
+      operationId: updateChapter
+      tags: [chapters]
+      summary: Update a chapter
+      parameters:
+        - name: subjectId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ChapterUpdate"
+      responses:
+        "200":
+          description: Updated chapter
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Chapter"
+        "404":
+          description: Not found
+    delete:
+      operationId: deleteChapter
+      tags: [chapters]
+      summary: Delete a chapter
+      parameters:
+        - name: subjectId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+        "404":
+          description: Not found
+
+  /tasks:
+    get:
+      operationId: listTasks
+      tags: [tasks]
+      summary: List tasks
+      parameters:
+        - name: type
+          in: query
+          schema:
+            type: string
+            enum: [daily, weekly, monthly]
+      responses:
+        "200":
+          description: List of tasks
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Task"
+    post:
+      operationId: createTask
+      tags: [tasks]
+      summary: Create a task
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TaskInput"
+      responses:
+        "201":
+          description: Created task
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Task"
+
+  /tasks/{id}:
+    patch:
+      operationId: updateTask
+      tags: [tasks]
+      summary: Update a task
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TaskUpdate"
+      responses:
+        "200":
+          description: Updated task
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Task"
+        "404":
+          description: Not found
+    delete:
+      operationId: deleteTask
+      tags: [tasks]
+      summary: Delete a task
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+        "404":
+          description: Not found
+
+  /events:
+    get:
+      operationId: listEvents
+      tags: [events]
+      summary: List calendar events
+      parameters:
+        - name: month
+          in: query
+          schema:
+            type: integer
+        - name: year
+          in: query
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: List of events
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/CalendarEvent"
+    post:
+      operationId: createEvent
+      tags: [events]
+      summary: Create a calendar event
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CalendarEventInput"
+      responses:
+        "201":
+          description: Created event
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CalendarEvent"
+
+  /events/{id}:
+    patch:
+      operationId: updateEvent
+      tags: [events]
+      summary: Update a calendar event
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CalendarEventUpdate"
+      responses:
+        "200":
+          description: Updated event
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CalendarEvent"
+        "404":
+          description: Not found
+    delete:
+      operationId: deleteEvent
+      tags: [events]
+      summary: Delete a calendar event
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+        "404":
+          description: Not found
+
+  /sessions:
+    get:
+      operationId: listSessions
+      tags: [sessions]
+      summary: List focus sessions
+      parameters:
+        - name: period
+          in: query
+          schema:
+            type: string
+            enum: [today, week, month]
+      responses:
+        "200":
+          description: List of sessions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/FocusSession"
+    post:
+      operationId: createSession
+      tags: [sessions]
+      summary: Record a focus session
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FocusSessionInput"
+      responses:
+        "201":
+          description: Created session
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FocusSession"
+
+  /settings:
+    get:
+      operationId: getSettings
+      tags: [settings]
+      summary: Get user settings
+      responses:
+        "200":
+          description: Settings
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Settings"
+    put:
+      operationId: updateSettings
+      tags: [settings]
+      summary: Update user settings
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SettingsInput"
+      responses:
+        "200":
+          description: Updated settings
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Settings"
+
+  /stats:
+    get:
+      operationId: getStats
+      tags: [stats]
+      summary: Get study statistics and dashboard summary
+      responses:
+        "200":
+          description: Statistics
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StudyStats"
+
+  /stats/progress:
+    get:
+      operationId: getProgressStats
+      tags: [stats]
+      summary: Get progress breakdown by type (school/online/selfstudy)
+      responses:
+        "200":
+          description: Progress stats
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProgressStats"
+
+  /achievements:
+    get:
+      operationId: listAchievements
+      tags: [achievements]
+      summary: List achievements and gamification data
+      responses:
+        "200":
+          description: Achievements
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AchievementsData"
+
+  /backup/export:
+    get:
+      operationId: exportBackup
+      tags: [backup]
+      summary: Export all data as JSON backup
+      responses:
+        "200":
+          description: Full backup
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BackupData"
+
+  /backup/import:
+    post:
+      operationId: importBackup
+      tags: [backup]
+      summary: Import data from JSON backup
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BackupData"
+      responses:
+        "200":
+          description: Import result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ImportResult"
+
 components:
   schemas:
     HealthStatus:
       type: object
+      required: [status]
       properties:
         status:
           type: string
-      required:
-        - status
 
+    LoginInput:
+      type: object
+      required: [password]
+      properties:
+        password:
+          type: string
+
+    AuthStatus:
+      type: object
+      required: [authenticated]
+      properties:
+        authenticated:
+          type: boolean
+
+    Subject:
+      type: object
+      required: [id, name, color, sortOrder, createdAt]
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        color:
+          type: string
+        teacherName:
+          type: ["string", "null"]
+        bookName:
+          type: ["string", "null"]
+        progressType:
+          type: string
+          enum: [school, online, selfstudy]
+        sortOrder:
+          type: integer
+        createdAt:
+          type: string
+
+    SubjectInput:
+      type: object
+      required: [name, color]
+      properties:
+        name:
+          type: string
+        color:
+          type: string
+        teacherName:
+          type: string
+        bookName:
+          type: string
+        progressType:
+          type: string
+          enum: [school, online, selfstudy]
+        sortOrder:
+          type: integer
+
+    SubjectUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+        color:
+          type: string
+        teacherName:
+          type: ["string", "null"]
+        bookName:
+          type: ["string", "null"]
+        progressType:
+          type: string
+          enum: [school, online, selfstudy]
+        sortOrder:
+          type: integer
+
+    Chapter:
+      type: object
+      required: [id, subjectId, chapterNumber, name, estimatedHours, difficulty, weightage, status, sortOrder, createdAt]
+      properties:
+        id:
+          type: integer
+        subjectId:
+          type: integer
+        chapterNumber:
+          type: integer
+        name:
+          type: string
+        estimatedHours:
+          type: number
+        difficulty:
+          type: string
+          enum: [easy, medium, hard]
+        weightage:
+          type: integer
+        status:
+          type: string
+          enum: [not_started, in_progress, revision, completed]
+        notes:
+          type: ["string", "null"]
+        sortOrder:
+          type: integer
+        createdAt:
+          type: string
+
+    ChapterInput:
+      type: object
+      required: [chapterNumber, name, estimatedHours]
+      properties:
+        chapterNumber:
+          type: integer
+        name:
+          type: string
+        estimatedHours:
+          type: number
+        difficulty:
+          type: string
+          enum: [easy, medium, hard]
+        weightage:
+          type: integer
+        status:
+          type: string
+          enum: [not_started, in_progress, revision, completed]
+        notes:
+          type: string
+        sortOrder:
+          type: integer
+
+    ChapterUpdate:
+      type: object
+      properties:
+        chapterNumber:
+          type: integer
+        name:
+          type: string
+        estimatedHours:
+          type: number
+        difficulty:
+          type: string
+          enum: [easy, medium, hard]
+        weightage:
+          type: integer
+        status:
+          type: string
+          enum: [not_started, in_progress, revision, completed]
+        notes:
+          type: ["string", "null"]
+        sortOrder:
+          type: integer
+
+    SubjectWithChapters:
+      type: object
+      required: [id, name, color, sortOrder, createdAt, chapters]
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        color:
+          type: string
+        teacherName:
+          type: ["string", "null"]
+        bookName:
+          type: ["string", "null"]
+        progressType:
+          type: string
+          enum: [school, online, selfstudy]
+        sortOrder:
+          type: integer
+        createdAt:
+          type: string
+        chapters:
+          type: array
+          items:
+            $ref: "#/components/schemas/Chapter"
+
+    Task:
+      type: object
+      required: [id, title, type, completed, priority, createdAt]
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        type:
+          type: string
+          enum: [daily, weekly, monthly]
+        completed:
+          type: boolean
+        priority:
+          type: string
+          enum: [low, medium, high]
+        deadline:
+          type: ["string", "null"]
+        notes:
+          type: ["string", "null"]
+        sortOrder:
+          type: integer
+        createdAt:
+          type: string
+
+    TaskInput:
+      type: object
+      required: [title, type]
+      properties:
+        title:
+          type: string
+        type:
+          type: string
+          enum: [daily, weekly, monthly]
+        completed:
+          type: boolean
+        priority:
+          type: string
+          enum: [low, medium, high]
+        deadline:
+          type: string
+        notes:
+          type: string
+        sortOrder:
+          type: integer
+
+    TaskUpdate:
+      type: object
+      properties:
+        title:
+          type: string
+        type:
+          type: string
+          enum: [daily, weekly, monthly]
+        completed:
+          type: boolean
+        priority:
+          type: string
+          enum: [low, medium, high]
+        deadline:
+          type: ["string", "null"]
+        notes:
+          type: ["string", "null"]
+        sortOrder:
+          type: integer
+
+    CalendarEvent:
+      type: object
+      required: [id, title, date, color, type, createdAt]
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        date:
+          type: string
+        color:
+          type: string
+        type:
+          type: string
+          enum: [exam, holiday, event, reminder]
+        notes:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+
+    CalendarEventInput:
+      type: object
+      required: [title, date, color, type]
+      properties:
+        title:
+          type: string
+        date:
+          type: string
+        color:
+          type: string
+        type:
+          type: string
+          enum: [exam, holiday, event, reminder]
+        notes:
+          type: string
+
+    CalendarEventUpdate:
+      type: object
+      properties:
+        title:
+          type: string
+        date:
+          type: string
+        color:
+          type: string
+        type:
+          type: string
+          enum: [exam, holiday, event, reminder]
+        notes:
+          type: ["string", "null"]
+
+    FocusSession:
+      type: object
+      required: [id, durationMinutes, sessionType, completedAt]
+      properties:
+        id:
+          type: integer
+        durationMinutes:
+          type: integer
+        sessionType:
+          type: string
+          enum: [pomodoro, short_break, long_break, custom]
+        subjectId:
+          type: ["integer", "null"]
+        notes:
+          type: ["string", "null"]
+        completedAt:
+          type: string
+
+    FocusSessionInput:
+      type: object
+      required: [durationMinutes, sessionType]
+      properties:
+        durationMinutes:
+          type: integer
+        sessionType:
+          type: string
+          enum: [pomodoro, short_break, long_break, custom]
+        subjectId:
+          type: integer
+        notes:
+          type: string
+
+    Settings:
+      type: object
+      required: [id, theme, accentColor, dailyGoalMinutes, weeklyGoalMinutes, monthlyGoalMinutes, pomodoroMinutes, shortBreakMinutes, longBreakMinutes]
+      properties:
+        id:
+          type: integer
+        theme:
+          type: string
+          enum: [light, dark, system]
+        accentColor:
+          type: string
+        dailyGoalMinutes:
+          type: integer
+        weeklyGoalMinutes:
+          type: integer
+        monthlyGoalMinutes:
+          type: integer
+        pomodoroMinutes:
+          type: integer
+        shortBreakMinutes:
+          type: integer
+        longBreakMinutes:
+          type: integer
+
+    SettingsInput:
+      type: object
+      properties:
+        theme:
+          type: string
+          enum: [light, dark, system]
+        accentColor:
+          type: string
+        dailyGoalMinutes:
+          type: integer
+        weeklyGoalMinutes:
+          type: integer
+        monthlyGoalMinutes:
+          type: integer
+        pomodoroMinutes:
+          type: integer
+        shortBreakMinutes:
+          type: integer
+        longBreakMinutes:
+          type: integer
+
+    SubjectProgress:
+      type: object
+      required: [subjectId, subjectName, color, totalHours, completedHours, percentage, totalChapters, completedChapters]
+      properties:
+        subjectId:
+          type: integer
+        subjectName:
+          type: string
+        color:
+          type: string
+        totalHours:
+          type: number
+        completedHours:
+          type: number
+        percentage:
+          type: number
+        totalChapters:
+          type: integer
+        completedChapters:
+          type: integer
+
+    StudyStats:
+      type: object
+      required: [todayMinutes, weekMinutes, monthMinutes, totalSessions, currentStreak, bestStreak, xp, level, overallProgress, schoolProgress, onlineProgress, selfStudyProgress, todayTasks, completedTodayTasks, upcomingEvents]
+      properties:
+        todayMinutes:
+          type: integer
+        weekMinutes:
+          type: integer
+        monthMinutes:
+          type: integer
+        totalSessions:
+          type: integer
+        currentStreak:
+          type: integer
+        bestStreak:
+          type: integer
+        xp:
+          type: integer
+        level:
+          type: integer
+        overallProgress:
+          type: number
+        schoolProgress:
+          type: number
+        onlineProgress:
+          type: number
+        selfStudyProgress:
+          type: number
+        todayTasks:
+          type: integer
+        completedTodayTasks:
+          type: integer
+        upcomingEvents:
+          type: array
+          items:
+            $ref: "#/components/schemas/CalendarEvent"
+        subjectProgress:
+          type: array
+          items:
+            $ref: "#/components/schemas/SubjectProgress"
+
+    ProgressStats:
+      type: object
+      required: [school, online, selfstudy]
+      properties:
+        school:
+          $ref: "#/components/schemas/ProgressTypeStats"
+        online:
+          $ref: "#/components/schemas/ProgressTypeStats"
+        selfstudy:
+          $ref: "#/components/schemas/ProgressTypeStats"
+
+    ProgressTypeStats:
+      type: object
+      required: [percentage, totalHours, completedHours, totalChapters, completedChapters, subjects]
+      properties:
+        percentage:
+          type: number
+        totalHours:
+          type: number
+        completedHours:
+          type: number
+        totalChapters:
+          type: integer
+        completedChapters:
+          type: integer
+        subjects:
+          type: array
+          items:
+            $ref: "#/components/schemas/SubjectProgress"
+
+    AchievementsData:
+      type: object
+      required: [xp, level, currentStreak, bestStreak, achievements, badges]
+      properties:
+        xp:
+          type: integer
+        level:
+          type: integer
+        currentStreak:
+          type: integer
+        bestStreak:
+          type: integer
+        achievements:
+          type: array
+          items:
+            $ref: "#/components/schemas/Achievement"
+        badges:
+          type: array
+          items:
+            $ref: "#/components/schemas/Badge"
+
+    Achievement:
+      type: object
+      required: [id, name, description, earned, earnedAt]
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        earned:
+          type: boolean
+        earnedAt:
+          type: ["string", "null"]
+
+    Badge:
+      type: object
+      required: [id, name, description, icon, earned]
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        icon:
+          type: string
+        earned:
+          type: boolean
+
+    BackupData:
+      type: object
+      required: [version, exportedAt, subjects, chapters, tasks, events, sessions, settings]
+      properties:
+        version:
+          type: string
+        exportedAt:
+          type: string
+        subjects:
+          type: array
+          items:
+            $ref: "#/components/schemas/Subject"
+        chapters:
+          type: array
+          items:
+            $ref: "#/components/schemas/Chapter"
+        tasks:
+          type: array
+          items:
+            $ref: "#/components/schemas/Task"
+        events:
+          type: array
+          items:
+            $ref: "#/components/schemas/CalendarEvent"
+        sessions:
+          type: array
+          items:
+            $ref: "#/components/schemas/FocusSession"
+        settings:
+          $ref: "#/components/schemas/Settings"
+
+    ImportResult:
+      type: object
+      required: [success, message]
+      properties:
+        success:
+          type: boolean
+        message:
+          type: string

@@ -1,0 +1,704 @@
+StudyOS – Final Master Prompt (Production Ready)
+
+Project Overview
+
+Build a production-ready, premium, responsive, full-stack web application named StudyOS.
+
+StudyOS is my personal study operating system. It should help me organize my complete academic life in one place by managing my syllabus, tracking progress, planning studies, recording focus sessions, managing tasks, monitoring statistics, and securely storing all data.
+
+The application should feel like a premium desktop application rather than a simple website.
+
+The UI should be minimal, modern, professional, distraction-free, highly customizable, and extremely fast.
+
+⸻
+
+Primary Goal
+
+The application should allow me to:
+
+* Manage complete syllabus
+* Track study progress
+* Track school progress
+* Track online class progress
+* Track self-study progress
+* Organize tasks
+* Manage calendar
+* Record focus sessions
+* View statistics
+* Store all data permanently
+* Backup and restore data
+* Access everything from any device through one website
+
+⸻
+
+Tech Stack
+
+Use:
+
+Frontend
+
+* Next.js
+* React
+* TypeScript
+* Tailwind CSS
+* Framer Motion
+
+Backend
+
+* Node.js
+
+Database
+
+* PostgreSQL
+
+ORM
+
+* Prisma
+
+Authentication
+
+* Secure Password Authentication
+
+Deployment
+
+* GitHub
+* Replit Deployments (or another free service suitable for a full-stack app)
+
+⸻
+
+UI Design
+
+Design Style:
+
+* Minimal
+* Premium
+* Professional
+* Modern
+* Student-focused
+
+Theme:
+
+* Light Mode
+* Dark Mode
+
+Primary Color
+
+Blue
+
+Background
+
+White (Light)
+
+Dark Gray (Dark)
+
+Use
+
+* Rounded cards
+* Soft shadows
+* Clean typography
+* Modern icons
+* Smooth animations
+* Responsive layout
+* Fast transitions
+
+Avoid
+
+* Clutter
+* Flashy animations
+* Unnecessary decorations
+* Motivational quotes
+* Weather widgets
+* News widgets
+* Advertisements
+* Social feeds
+* Random AI chat widgets
+
+Every component should have a practical purpose.
+
+⸻
+
+Landing Page
+
+Create a professional landing page including:
+
+* StudyOS Logo
+* Hero Section
+* Brief introduction
+* Feature highlights
+* Screenshots section
+* Login button
+* Get Started button
+* Footer
+
+⸻
+
+Login System
+
+The website URL should be public.
+
+Anyone can open the website.
+
+However,
+
+No one should be able to enter the application without authentication.
+
+When the website opens:
+
+Display only a Login Screen.
+
+The user must enter a Master Password.
+
+If correct:
+
+Enter StudyOS.
+
+If incorrect:
+
+Display an error.
+
+Keep the user logged in securely until logout.
+
+Provide
+
+* Login
+* Logout
+
+Store the password securely using environment variables.
+
+Never hardcode the password.
+
+⸻
+
+Deployment
+
+After development:
+
+Deploy the application.
+
+Requirements:
+
+* Public URL
+* Accessible worldwide
+* Works on desktop
+* Works on laptop
+* Works on tablet
+* Works on Android
+* Works on iPhone
+
+Push the complete project to a public GitHub repository.
+
+Include:
+
+* README
+* Installation Guide
+* Deployment Guide
+* Folder Structure
+* Screenshots
+
+⸻
+
+Dashboard
+
+The dashboard should only contain useful study information.
+
+Top Right Corner
+
+Always display:
+
+* Current Date
+* Live Time
+* Clock Icon
+
+Clicking the Clock Icon opens the Focus Timer Center.
+
+Dashboard Widgets
+
+Display:
+
+* Today’s Progress
+* Overall Progress
+* School Progress
+* Online Class Progress
+* Self Study Progress
+* Daily Goal
+* Upcoming Events
+* Today’s Tasks
+* Study Streak
+* Calendar Preview
+* Quick Actions
+
+No unnecessary widgets.
+
+⸻
+
+Sidebar
+
+Dashboard
+
+Syllabus
+
+Progress
+
+Calendar
+
+To-Do
+
+Calculator
+
+Focus Timers
+
+Statistics
+
+Backup & Restore
+
+Settings
+
+⸻
+
+Syllabus Module
+
+Unlimited Subjects.
+
+Each Subject stores:
+
+* Subject Name
+* Color
+* Teacher Name
+* Book Name
+* Total Chapters
+
+Each Chapter stores:
+
+* Chapter Number
+* Chapter Name
+* Estimated Study Hours
+* Difficulty
+* Weightage
+* Status
+
+Status Options
+
+* Not Started
+* In Progress
+* Revision
+* Completed
+
+Users can
+
+* Add
+* Edit
+* Delete
+* Rename
+* Reorder
+* Move chapters
+* Change study hours
+
+Everything editable.
+
+⸻
+
+Progress Module
+
+Three independent sections.
+
+School Progress
+
+Track syllabus completed in school.
+
+Display:
+
+* Progress Bar
+* Percentage
+* Chapters Completed
+* Chapters Remaining
+* Hours Completed
+* Hours Remaining
+
+⸻
+
+Online Class Progress
+
+Track online coaching completion.
+
+Display same statistics.
+
+⸻
+
+Self Study Progress
+
+Track personal study.
+
+Display same statistics.
+
+⸻
+
+Progress Calculation
+
+Never calculate progress only by chapter count.
+
+Instead,
+
+Calculate using Estimated Study Hours.
+
+Example:
+
+Chapter A
+
+2 Hours
+
+Chapter B
+
+18 Hours
+
+Total
+
+100 Hours
+
+Completed
+
+35 Hours
+
+Progress
+
+35%
+
+⸻
+
+Calendar
+
+Beautiful monthly calendar.
+
+Already include:
+
+* Exams
+* Holidays
+* School Events
+
+Allow user to:
+
+* Add Event
+* Edit Event
+* Delete Event
+* Color-code Event
+* Add Notes
+* Add Reminder
+
+Clicking any day opens event details.
+
+⸻
+
+To-Do Module
+
+Three Tabs.
+
+Daily
+
+Weekly
+
+Monthly
+
+Each Task supports:
+
+* Checkbox
+* Priority
+* Deadline
+* Notes
+* Progress
+* Drag & Drop
+
+Everything editable.
+
+⸻
+
+Calculator
+
+Built-in Scientific Calculator.
+
+Works offline.
+
+Keyboard support.
+
+Fast loading.
+
+⸻
+
+Focus Timer Center
+
+Contains
+
+Pomodoro
+
+Default:
+
+25 minutes
+
+Short Break
+
+Editable
+
+Long Break
+
+Editable
+
+Features
+
+* Start
+* Pause
+* Resume
+* Reset
+* Fullscreen
+* Session Counter
+
+⸻
+
+Timer Records
+
+Automatically store
+
+Daily
+
+Weekly
+
+Monthly
+
+Statistics
+
+Store:
+
+* Number of Sessions
+* Total Focus Time
+* Average Focus Time
+
+⸻
+
+Gamification
+
+Simple productivity gamification.
+
+Include
+
+Current Streak
+
+Best Streak
+
+XP
+
+Levels
+
+Achievements
+
+Badges
+
+Daily Goal Completion
+
+Weekly Goal Completion
+
+No childish game effects.
+
+⸻
+
+Statistics
+
+Generate charts for
+
+* Daily Study Hours
+* Weekly Study Hours
+* Monthly Study Hours
+* Subject Progress
+* School Progress
+* Online Progress
+* Self Study Progress
+* Timer Usage
+* Streak History
+* Completion Percentage
+
+⸻
+
+Backup & Restore
+
+Dedicated Page.
+
+Buttons
+
+Export Backup
+
+Import Backup
+
+Backup
+
+Restore
+
+Backup should include
+
+Subjects
+
+Chapters
+
+Progress
+
+Calendar
+
+Tasks
+
+Statistics
+
+Timer Records
+
+Achievements
+
+Settings
+
+Themes
+
+Everything should be recoverable.
+
+⸻
+
+Data Storage
+
+Automatically save everything.
+
+Never lose data after refresh.
+
+Store
+
+Subjects
+
+Chapters
+
+Progress
+
+Calendar
+
+Tasks
+
+Statistics
+
+Timer Records
+
+Achievements
+
+Settings
+
+Themes
+
+⸻
+
+Search
+
+Global Search.
+
+Instant search through
+
+Subjects
+
+Chapters
+
+Tasks
+
+Calendar Events
+
+⸻
+
+Settings
+
+Dark Mode
+
+Light Mode
+
+Accent Color
+
+Daily Goal
+
+Weekly Goal
+
+Monthly Goal
+
+Default Timer
+
+Notification Preferences
+
+Backup Preferences
+
+Everything editable.
+
+⸻
+
+Editing
+
+Almost every element should be editable.
+
+Allow editing of
+
+Subjects
+
+Chapter Names
+
+Chapter Numbers
+
+Study Hours
+
+Difficulty
+
+Progress
+
+Calendar
+
+Tasks
+
+Goals
+
+Timers
+
+Theme
+
+Settings
+
+Nothing should be permanently hardcoded.
+
+⸻
+
+Performance
+
+Fast Loading
+
+Responsive
+
+Lazy Loading
+
+Offline Support (PWA)
+
+Keyboard Shortcuts
+
+Auto Save
+
+Undo Delete
+
+Confirmation before Delete
+
+Accessible UI
+
+Clean Architecture
+
+Production Ready
+
+⸻
+
+Code Quality
+
+Use:
+
+* Modular architecture
+* Reusable components
+* Clean folder structure
+* TypeScript best practices
+* Well-commented code
+* Error handling
+* Loading states
+* Empty states
+
+⸻
+
+Final Objective
+
+StudyOS should feel like a professional personal operating system dedicated to studying. It should provide an intuitive, distraction-free workspace where I can manage my syllabus, monitor three separate progress streams (School, Online Class, and Self Study), organize tasks, maintain a calendar of important events, use integrated focus timers, review statistics, earn productivity-based achievements, and securely back up and restore all data. The application must be fully responsive, accessible from any device through a public URL, protected by a secure master password, automatically save all changes, and provide a polished, production-quality experience suitable for daily long-term use.
