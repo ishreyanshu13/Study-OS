@@ -13,7 +13,6 @@ import {
   Database, 
   Settings as SettingsIcon,
   LogOut,
-  Search
 } from "lucide-react";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
@@ -44,6 +43,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     { href: "/backup", label: "Backup & Restore", icon: Database },
     { href: "/settings", label: "Settings", icon: SettingsIcon },
   ];
+
+  const timeStr = time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
+  const dayStr = time.toLocaleDateString(undefined, { weekday: 'long' });
+  const dateStr = time.toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' });
 
   return (
     <div className="min-h-screen bg-background flex flex-col md:flex-row font-sans">
@@ -84,24 +87,17 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       {/* Main Content */}
       <main className="flex-1 flex flex-col min-w-0 h-screen overflow-hidden">
         {/* Topbar */}
-        <header className="h-16 border-b border-border bg-card/50 backdrop-blur flex items-center justify-between px-6 flex-shrink-0 z-10">
-          <div className="flex items-center w-full max-w-md bg-muted/50 rounded-md px-3 py-1.5 border border-border/50 focus-within:border-primary/50 transition-colors">
-            <Search className="w-4 h-4 text-muted-foreground mr-2" />
-            <input 
-              type="text" 
-              placeholder="Search..." 
-              className="bg-transparent border-none outline-none text-sm w-full placeholder:text-muted-foreground"
-            />
-          </div>
-          
+        <header className="h-16 border-b border-primary/20 bg-primary/10 flex items-center justify-between px-6 flex-shrink-0 z-10">
+          <div />
+
           <div className="flex items-center gap-6">
-            <Link href="/focus" className="flex items-center gap-3 text-sm font-medium hover:text-primary transition-colors cursor-pointer group">
-              <div className="text-right leading-tight">
-                <div className="text-foreground">{time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
-                <div className="text-muted-foreground text-xs font-normal">{time.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' })}</div>
+            <Link href="/focus" className="flex items-center gap-3 text-sm font-medium hover:text-primary transition-colors cursor-pointer">
+              <div className="text-right leading-snug">
+                <div className="text-foreground font-semibold text-base">{timeStr}</div>
+                <div className="text-muted-foreground text-xs">{dayStr}, {dateStr}</div>
               </div>
             </Link>
-            
+
             <button 
               onClick={handleLogout}
               className="text-muted-foreground hover:text-foreground transition-colors p-2"
