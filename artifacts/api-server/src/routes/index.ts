@@ -8,7 +8,6 @@ import eventsRouter from "./events";
 import sessionsRouter from "./sessions";
 import settingsRouter from "./settings";
 import statsRouter from "./stats";
-import achievementsRouter from "./achievements";
 import backupRouter from "./backup";
 
 const router: IRouter = Router();
@@ -22,7 +21,6 @@ router.use(eventsRouter);
 router.use(sessionsRouter);
 router.use(settingsRouter);
 router.use(statsRouter);
-router.use(achievementsRouter);
 router.use(backupRouter);
 
 export default router;

@@ -10,7 +10,6 @@ import {
   Calculator as CalculatorIcon, 
   Timer, 
   BarChart2, 
-  Award, 
   Database, 
   Settings as SettingsIcon,
   LogOut,
@@ -42,7 +41,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     { href: "/calculator", label: "Calculator", icon: CalculatorIcon },
     { href: "/focus", label: "Focus Timer", icon: Timer },
     { href: "/statistics", label: "Statistics", icon: BarChart2 },
-    { href: "/achievements", label: "Achievements", icon: Award },
     { href: "/backup", label: "Backup & Restore", icon: Database },
     { href: "/settings", label: "Settings", icon: SettingsIcon },
   ];

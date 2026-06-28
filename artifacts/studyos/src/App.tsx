@@ -16,7 +16,6 @@ import Tasks from "@/pages/Tasks";
 import Calculator from "@/pages/Calculator";
 import Focus from "@/pages/Focus";
 import Statistics from "@/pages/Statistics";
-import Achievements from "@/pages/Achievements";
 import Backup from "@/pages/Backup";
 import Settings from "@/pages/Settings";
 import { useGetAuthStatus } from "@workspace/api-client-react";
@@ -57,7 +56,6 @@ function Router() {
       <Route path="/calculator" component={() => <ProtectedRoute component={Calculator} />} />
       <Route path="/focus" component={() => <ProtectedRoute component={Focus} />} />
       <Route path="/statistics" component={() => <ProtectedRoute component={Statistics} />} />
-      <Route path="/achievements" component={() => <ProtectedRoute component={Achievements} />} />
       <Route path="/backup" component={() => <ProtectedRoute component={Backup} />} />
       <Route path="/settings" component={() => <ProtectedRoute component={Settings} />} />
       <Route component={NotFound} />
