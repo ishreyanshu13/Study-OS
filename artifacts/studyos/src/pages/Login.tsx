@@ -3,7 +3,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useLocation } from "wouter";
-import { useLogin } from "@workspace/api-client-react";
+import { useLogin, getGetAuthStatusQueryKey } from "@workspace/api-client-react";
+import { useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -15,6 +16,7 @@ const loginSchema = z.object({
 export default function Login() {
   const [, setLocation] = useLocation();
   const login = useLogin();
+  const queryClient = useQueryClient();
 
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
@@ -27,8 +29,12 @@ export default function Login() {
     login.mutate(
       { data },
       {
-        onSuccess: () => {
+        onSuccess: async () => {
+          await queryClient.invalidateQueries({ queryKey: getGetAuthStatusQueryKey() });
           setLocation("/dashboard");
+        },
+        onError: () => {
+          form.setError("password", { message: "Incorrect password" });
         },
       }
     );
