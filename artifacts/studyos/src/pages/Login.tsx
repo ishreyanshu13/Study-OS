@@ -42,7 +42,7 @@ export default function Login() {
             <span className="text-primary-foreground text-xl font-bold">S</span>
           </div>
           <h1 className="text-2xl font-bold tracking-tight">StudyOS</h1>
-          <p className="text-muted-foreground text-sm mt-1">Enter your master password</p>
+          <p className="text-muted-foreground text-sm mt-1">Enter your password</p>
         </div>
 
         <Form {...form}>
