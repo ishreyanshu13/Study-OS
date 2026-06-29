@@ -1,1 +1,1 @@
-Study helper website
+artifacts/studyos/package.json
